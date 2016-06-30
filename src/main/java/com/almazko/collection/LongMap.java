@@ -45,9 +45,9 @@ public class LongMap<V> {
 
 
     private Node<V>[] nodes;
+    private int size;
 
     public LongMap() {
-        this.nodes = new Node[32];
     }
 
     boolean containsKey(long key) {
@@ -72,16 +72,21 @@ public class LongMap<V> {
     }
 
     private Node<V> getFirstNode(long key) {
+        if (size == 0) return null;
         return nodes[hash(key)];
     }
 
     V put(long key, V value) {
 
         final int hash = hash(key);
+
+        if (nodes == null) nodes = new Node[32];
+
         Node<V> node = nodes[hash];
 
         if (node == null) {
             nodes[hash] = new Node<>(key, value, null);
+            size++;
             return null;
         } else {
             while (node.next != null) {
@@ -95,10 +100,14 @@ public class LongMap<V> {
             }
 
             node.next = new Node<>(key, value, null);
+            size++;
         }
         return null;
     }
 
+    public int size() {
+        return size;
+    }
 
     static int hash(long key) {
         return (int) (key % 32);

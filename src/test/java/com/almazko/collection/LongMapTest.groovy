@@ -11,6 +11,7 @@ class LongMapTest extends Specification {
         def map = new LongMap<String>()
 
         expect:
+        map.size() == 0
         !map.containsKey(0)
         map.get(0) == null
     }
@@ -24,6 +25,7 @@ class LongMapTest extends Specification {
         map.put(1, "test")
 
         then:
+        map.size() == 1
         map.containsKey(1)
         map.get(1) == "test"
         !map.containsKey(0)

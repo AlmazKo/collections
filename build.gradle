@@ -3,8 +3,17 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'me.champeau.gradle.jmh'
 
 sourceCompatibility = 1.8
+
+jmh {
+    jmhVersion = '1.12'
+    iterations = 3
+    operationsPerInvocation = 3
+    warmupIterations = 5
+    fork = 1
+}
 
 repositories {
     mavenCentral()
@@ -12,4 +21,16 @@ repositories {
 
 dependencies {
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
+
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'gradle.plugin.me.champeau.gradle:jmh-gradle-plugin:0.3.0'
+    }
 }
