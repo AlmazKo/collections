@@ -4,6 +4,7 @@ import org.openjdk.jmh.annotations.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
@@ -12,6 +13,7 @@ public class Contains {
     static String[] values;
     static long[] keys;
     static Long[] keys2;
+    static Random rand = new Random(1);
 
     static {
 
@@ -21,9 +23,11 @@ public class Contains {
         keys2 = new Long[10_000];
         int i = 0;
         for (long v = 10_000_000_000L; v < 10_000_010_000L; v++) {
-            keys[i] = v;
-            keys2[i] = v;
-            values[i++] = v + "";
+            keys[i] = rand.nextLong();
+//            keys[i] = v;
+            keys2[i] = keys[i];
+            values[i] = keys[i] + "";
+            i++;
         }
 
     }

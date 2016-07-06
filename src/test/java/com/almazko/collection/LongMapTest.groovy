@@ -32,7 +32,7 @@ class LongMapTest extends Specification {
         map.get(0) == null
     }
 
-    def "Get with collisions"() {
+    def "Get with collisions ordered"() {
         given: 'map with 4 items same hash'
         def map = new LongMap<String>()
 
@@ -50,6 +50,45 @@ class LongMapTest extends Specification {
         map.get(96) == "test3"
         map.get(128) == "test4"
         map.get(160) == "test5"
+    }
+
+    def "Get with collisions not ordered"() {
+        given: 'map with 4 items same hash'
+        def map = new LongMap<String>()
+
+        when:
+
+        map.put(96, "test3")
+        map.put(32, "test1")
+        map.put(64, "test2")
+        map.put(160, "test5")
+        map.put(128, "test4")
+
+        then:
+        map.containsKey(32)
+        map.get(32) == "test1"
+        map.get(64) == "test2"
+        map.get(96) == "test3"
+        map.get(128) == "test4"
+        map.get(160) == "test5"
+    }
+
+
+    def "Get with collisions1"() {
+        given: 'map with 4 items different hash'
+        def map = new LongMap<String>()
+
+        when:
+        map.put(1, "test1")
+        map.put(2, "test2")
+        map.put(3, "test3")
+        map.put(4, "test4")
+
+        then:
+        map.containsKey(1)
+        map.containsKey(2)
+        map.containsKey(3)
+        map.containsKey(4)
     }
 
     def "iterate"() {
