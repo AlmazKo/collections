@@ -3,29 +3,37 @@ package com.almazko.collection;
 import org.openjdk.jmh.annotations.*;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
+@State(Scope.Thread)
 public class Contains {
-    static String[] values;
-    static long[] keys;
-    static Long[] keys2;
 
-    static {
+    private static final int SIZE_DATA = 10000;
+    private String[] values;
+    private long[] keys;
+    private Long[] keys2;
+    private Random rand = new Random(0);
 
 
-        values = new String[10_000];
-        keys = new long[10_000];
-        keys2 = new Long[10_000];
+    @Setup(Level.Trial)
+    public void init() {
+        values = new String[SIZE_DATA];
+        keys = new long[SIZE_DATA];
+        keys2 = new Long[SIZE_DATA];
         int i = 0;
-        for (long v = 10_000_000_000L; v < 10_000_010_000L; v++) {
-            keys[i] = v;
-            keys2[i] = v;
-            values[i++] = v + "";
+        for (long v = 10_000_000_000L; i <SIZE_DATA; v++, i++) {
+            keys[i] = rand.nextInt();
+            keys2[i] = keys[i];
+            values[i] = keys[i] + "";
         }
 
+//        System.out.println(Arrays.toString(keys));
     }
 
 
